@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resume Parser AI - Recruiter AI Assistant</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            accent: {
+              cyan: '#06B6D4',
+              purple: '#8B5CF6',
+              emerald: '#10B981',
+              rose: '#F43F5E',
+              amber: '#F59E0B',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body class="overflow-x-hidden pb-12">
+
+  <!-- Header Navigation -->
+  <nav class="max-w-7xl mx-auto px-6 py-6 flex flex-col md:flex-row justify-between items-center border-b border-gray-800/80 mb-8 gap-4">
+    <div class="flex items-center gap-3">
+      <div class="p-3 bg-gradient-to-tr from-accent-purple to-accent-cyan rounded-2xl shadow-lg glow-purple">
+        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+        </svg>
+      </div>
+      <div>
+        <h1 class="text-2xl font-extrabold font-outfit tracking-wide bg-gradient-to-r from-white via-gray-200 to-accent-cyan bg-clip-text text-transparent">
+          AI RECRUITMENT INTELLIGENCE
+        </h1>
+        <p class="text-xs text-gray-400 font-semibold tracking-wider uppercase">Advanced Candidate Screening & ATS platform</p>
+      </div>
+    </div>
+    <div class="flex gap-2 p-1 bg-gray-900/80 rounded-2xl border border-gray-800/80">
+      <a href="/" class="px-5 py-2.5 rounded-xl text-xs font-bold tracking-wide transition-all text-gray-400 hover:text-white">Dashboard</a>
+      <a href="/analytics" class="px-5 py-2.5 rounded-xl text-xs font-bold tracking-wide transition-all text-gray-400 hover:text-white">Analytics & ML</a>
+      <a href="/chatbot" class="px-5 py-2.5 rounded-xl text-xs font-bold tracking-wide transition-all bg-gradient-to-r from-accent-purple to-accent-cyan text-white shadow-md flex items-center gap-1.5">
+        AI Assistant
+        <span class="w-2 h-2 rounded-full bg-accent-emerald animate-pulse"></span>
+      </a>
+    </div>
+  </nav>
+
+  <!-- Main Chatbox Layout -->
+  <main class="max-w-4xl mx-auto px-6">
+    <div class="glass-card flex flex-col h-[600px] overflow-hidden">
+      
+      <!-- Top banner -->
+      <div class="p-5 border-b border-gray-800 bg-gray-950/20 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="p-2.5 bg-accent-purple/10 border border-accent-purple/30 rounded-xl text-accent-purple">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+            </svg>
+          </div>
+          <div>
+            <h2 class="text-sm font-bold font-outfit text-white">Recruitment Assistant AI</h2>
+            <p class="text-[10px] text-gray-500 font-semibold tracking-wider uppercase">Contextual Dialog Queries & Heuristics</p>
+          </div>
+        </div>
+        <span class="text-[9px] bg-accent-emerald/10 border border-accent-emerald/30 text-accent-emerald px-2 py-0.5 rounded-full font-bold uppercase animate-pulse">Online</span>
+      </div>
+
+      <!-- Dialogue chat area -->
+      <div class="flex-1 p-5 overflow-y-auto space-y-4 scrollbar-thin bg-gray-900/10" id="chatArea">
+        
+        <!-- Welcome Message -->
+        <div class="flex gap-3 max-w-[80%]">
+          <div class="w-8 h-8 rounded-full bg-accent-purple/20 flex items-center justify-center shrink-0 border border-accent-purple/35 text-accent-purple font-extrabold text-xs">AI</div>
+          <div class="p-4 bg-gray-950/40 border border-gray-800/80 rounded-2xl text-xs leading-relaxed text-gray-300">
+            Hello! I am your AI Recruiter Assistant. I can query our candidate databases and prepare custom questions. 
+            <br><br>
+            Try asking me:
+            <ul class="list-disc pl-4 mt-2 space-y-1 text-accent-cyan font-medium">
+              <li>"Show top Python candidates"</li>
+              <li>"Who has certifications?"</li>
+              <li>"Suggest interview questions for Sarah Miller"</li>
+              <li>"Summarize candidate Sarah Miller"</li>
+            </ul>
+          </div>
+        </div>
+        
+        <!-- Previous Logs loaded from server database -->
+        {% for log in logs %}
+        <div class="flex gap-3 max-w-[80%] {% if log.sender == 'Recruiter' %}ml-auto flex-row-reverse{% endif %}">
+          <div class="w-8 h-8 rounded-full bg-{% if log.sender == 'Recruiter' %}accent-cyan/20 text-accent-cyan border-accent-cyan/35{% else %}accent-purple/20 text-accent-purple border-accent-purple/35{% endif %} flex items-center justify-center shrink-0 border font-extrabold text-xs">
+            {% if log.sender == 'Recruiter' %}HR{% else %}AI{% endif %}
+          </div>
+          <div class="p-4 bg-{% if log.sender == 'Recruiter' %}accent-cyan/5 border-accent-cyan/15{% else %}gray-950/40 border-gray-800/80{% endif %} rounded-2xl text-xs leading-relaxed text-gray-300 font-sans whitespace-pre-wrap">{{ log.message }}</div>
+        </div>
+        {% endfor %}
+
+      </div>
+
+      <!-- Message inputs -->
+      <div class="p-4 border-t border-gray-800 bg-gray-950/20">
+        <form id="chatForm" class="flex gap-3">
+          <input type="text" id="queryInput" placeholder="Type a recruiter command or candidate query..." class="flex-1 glass-input text-xs" required autocomplete="off">
+          <button type="submit" class="bg-gradient-to-r from-accent-purple to-accent-cyan text-white px-6 py-2.5 rounded-xl text-xs font-bold transition-all shadow-md flex items-center gap-1">
+            Send
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+            </svg>
+          </button>
+        </form>
+      </div>
+
+    </div>
+  </main>
+
+  <script>
+    // Handle AJAX messaging to avoid page refreshes
+    document.getElementById('chatForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      
+      const input = document.getElementById('queryInput');
+      const message = input.value.trim();
+      if (!message) return;
+      
+      input.value = '';
+      
+      const chatArea = document.getElementById('chatArea');
+      
+      // Append recruiter message
+      const recruiterBubble = `
+        <div class="flex gap-3 max-w-[80%] ml-auto flex-row-reverse">
+          <div class="w-8 h-8 rounded-full bg-accent-cyan/20 text-accent-cyan border border-accent-cyan/35 flex items-center justify-center shrink-0 font-extrabold text-xs">HR</div>
+          <div class="p-4 bg-accent-cyan/5 border border-accent-cyan/15 rounded-2xl text-xs leading-relaxed text-gray-300 font-sans whitespace-pre-wrap">${escapeHTML(message)}</div>
+        </div>
+      `;
+      chatArea.insertAdjacentHTML('beforeend', recruiterBubble);
+      chatArea.scrollTop = chatArea.scrollHeight;
+      
+      // Post to backend
+      try {
+        const response = await fetch('/chatbot/query', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ query: message })
+        });
+        
+        if (response.ok) {
+          const data = await response.json();
+          
+          // Helper parser to render lists or header tags nicely in bubbles
+          const processedResponse = data.response
+            .replace(/\#\#\#\s*(.*)/g, '<strong>$1</strong>')
+            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+            .replace(/\n/g, '<br>');
+            
+          const aiBubble = `
+            <div class="flex gap-3 max-w-[80%]">
+              <div class="w-8 h-8 rounded-full bg-accent-purple/20 text-accent-purple border border-accent-purple/35 flex items-center justify-center shrink-0 font-extrabold text-xs">AI</div>
+              <div class="p-4 bg-gray-950/40 border border-gray-800/80 rounded-2xl text-xs leading-relaxed text-gray-300 font-sans whitespace-pre-wrap">${processedResponse}</div>
+            </div>
+          `;
+          chatArea.insertAdjacentHTML('beforeend', aiBubble);
+          chatArea.scrollTop = chatArea.scrollHeight;
+        }
+      } catch (err) {
+        console.error("AJAX Error sending chatbot message:", err);
+      }
+    });
+
+    function escapeHTML(str) {
+      return str.replace(/[&<>'"]/g, 
+        tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
+      );
+    }
+    
+    // Scroll chat area on load
+    window.onload = function() {
+      const chatArea = document.getElementById('chatArea');
+      chatArea.scrollTop = chatArea.scrollHeight;
+    };
+  </script>
+</body>
+</html>

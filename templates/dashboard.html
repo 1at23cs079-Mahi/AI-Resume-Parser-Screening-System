@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resume Parser AI - Premium Screening System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            accent: {
+              cyan: '#06B6D4',
+              purple: '#8B5CF6',
+              emerald: '#10B981',
+              rose: '#F43F5E',
+              amber: '#F59E0B',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body class="overflow-x-hidden pb-12">
+
+  <!-- Header Navigation -->
+  <nav class="max-w-7xl mx-auto px-6 py-6 flex flex-col md:flex-row justify-between items-center border-b border-gray-800/80 mb-8 gap-4">
+    <div class="flex items-center gap-3">
+      <div class="p-3 bg-gradient-to-tr from-accent-purple to-accent-cyan rounded-2xl shadow-lg glow-purple">
+        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+        </svg>
+      </div>
+      <div>
+        <h1 class="text-2xl font-extrabold font-outfit tracking-wide bg-gradient-to-r from-white via-gray-200 to-accent-cyan bg-clip-text text-transparent">
+          AI RECRUITMENT INTELLIGENCE
+        </h1>
+        <p class="text-xs text-gray-400 font-semibold tracking-wider uppercase">Advanced Candidate Screening & ATS platform</p>
+      </div>
+    </div>
+    <div class="flex gap-2 p-1 bg-gray-900/80 rounded-2xl border border-gray-800/80">
+      <a href="/" class="px-5 py-2.5 rounded-xl text-xs font-bold tracking-wide transition-all bg-gradient-to-r from-accent-purple to-accent-cyan text-white shadow-md">Dashboard</a>
+      <a href="/analytics" class="px-5 py-2.5 rounded-xl text-xs font-bold tracking-wide transition-all text-gray-400 hover:text-white">Analytics & ML</a>
+      <a href="/chatbot" class="px-5 py-2.5 rounded-xl text-xs font-bold tracking-wide transition-all text-gray-400 hover:text-white flex items-center gap-1.5">
+        AI Assistant
+        <span class="w-2 h-2 rounded-full bg-accent-emerald animate-pulse"></span>
+      </a>
+    </div>
+  </nav>
+
+  <!-- Main Container -->
+  <main class="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-3 gap-8">
+    
+    <!-- Left Column: Controls & Uploads -->
+    <div class="lg:col-span-1 flex flex-col gap-6">
+      
+      <!-- KPI Stats -->
+      <div class="grid grid-cols-2 gap-4">
+        <div class="glass-card p-5 text-center glow-cyan">
+          <p class="text-xs text-gray-400 font-semibold uppercase">Total Profiles</p>
+          <p class="text-3xl font-extrabold font-outfit text-accent-cyan mt-1">{{ kpis.total_candidates }}</p>
+        </div>
+        <div class="glass-card p-5 text-center glow-purple">
+          <p class="text-xs text-gray-400 font-semibold uppercase">Mean Rating</p>
+          <p class="text-3xl font-extrabold font-outfit text-accent-purple mt-1">{{ kpis.avg_score }}/10</p>
+        </div>
+      </div>
+
+      <!-- Secure Upload Dropzone -->
+      <div class="glass-card p-6 flex flex-col gap-4">
+        <h2 class="text-lg font-bold font-outfit text-white flex items-center gap-2">
+          <svg class="w-5 h-5 text-accent-cyan" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+          </svg>
+          Secure Resume Upload
+        </h2>
+        
+        <form action="/upload" method="post" enctype="multipart/form-data" class="flex flex-col gap-4">
+          <div class="border-2 border-dashed border-gray-800 hover:border-accent-purple/50 rounded-2xl p-6 text-center transition-all relative group cursor-pointer bg-gray-900/30">
+            <input type="file" name="resume" required class="absolute inset-0 opacity-0 cursor-pointer w-full h-full" id="fileInput">
+            <svg class="w-8 h-8 text-gray-600 group-hover:text-accent-purple transition-all mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+            <p class="text-xs text-gray-400 group-hover:text-white transition-all font-semibold" id="fileName">Drag and drop or browse files</p>
+            <p class="text-[9px] text-gray-600 mt-1 uppercase font-semibold">PDF, DOCX, TXT (Max 5MB)</p>
+          </div>
+          
+          <div>
+            <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5">Target Classification Domain</label>
+            <select name="domain" class="w-full glass-input text-xs cursor-pointer animate-none">
+              <option value="Data Science">Data Science</option>
+              <option value="Web Development">Web Development</option>
+              <option value="Cloud Computing">Cloud Computing</option>
+              <option value="AI/ML">AI/ML</option>
+              <option value="Cybersecurity">Cybersecurity</option>
+              <option value="DevOps">DevOps</option>
+            </select>
+          </div>
+          
+          <button type="submit" class="w-full bg-gradient-to-r from-accent-purple to-accent-cyan hover:opacity-90 text-white font-bold py-3 px-4 rounded-xl transition-all shadow-lg glow-purple text-xs flex items-center justify-center gap-1.5">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+            Start Cognitive Analysis
+          </button>
+        </form>
+      </div>
+
+      <!-- Recruiter Weight Configuration -->
+      <div class="glass-card p-6 flex flex-col gap-4">
+        <h2 class="text-lg font-bold font-outfit text-white flex items-center gap-2">
+          <svg class="w-5 h-5 text-accent-purple" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+          </svg>
+          Scoring Configuration
+        </h2>
+        <form action="/weights" method="post" class="flex flex-col gap-4">
+          <div class="space-y-3">
+            <div>
+              <div class="flex justify-between text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">
+                <span>Skill Relevance</span>
+                <span><span id="skillVal">{{ (weights.skill_weight * 100)|int }}</span>%</span>
+              </div>
+              <input type="range" name="skills" min="0" max="100" value="{{ (weights.skill_weight * 100)|int }}" class="w-full accent-accent-purple" oninput="document.getElementById('skillVal').innerText = this.value">
+            </div>
+            <div>
+              <div class="flex justify-between text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">
+                <span>Experience Duration</span>
+                <span><span id="expVal">{{ (weights.experience_weight * 100)|int }}</span>%</span>
+              </div>
+              <input type="range" name="exp" min="0" max="100" value="{{ (weights.experience_weight * 100)|int }}" class="w-full accent-accent-purple" oninput="document.getElementById('expVal').innerText = this.value">
+            </div>
+            <div>
+              <div class="flex justify-between text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">
+                <span>Education Tier</span>
+                <span><span id="eduVal">{{ (weights.education_weight * 100)|int }}</span>%</span>
+              </div>
+              <input type="range" name="edu" min="0" max="100" value="{{ (weights.education_weight * 100)|int }}" class="w-full accent-accent-purple" oninput="document.getElementById('eduVal').innerText = this.value">
+            </div>
+          </div>
+          
+          <button type="submit" class="w-full bg-dark-700 hover:bg-gray-800 text-white font-bold py-2.5 px-4 rounded-xl transition-all border border-gray-800 text-xs">
+            Save Weights
+          </button>
+        </form>
+      </div>
+
+    </div>
+
+    <!-- Middle Column: Leaderboard / Screening Queue -->
+    <div class="lg:col-span-1 flex flex-col gap-6">
+      
+      <!-- Leaderboard ranking -->
+      <div class="glass-card p-6 flex flex-col flex-1 min-h-[550px]">
+        <div class="flex justify-between items-center border-b border-gray-800 pb-4 mb-4">
+          <h2 class="text-xl font-bold font-outfit text-white flex items-center gap-2">
+            <svg class="w-5 h-5 text-accent-cyan" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+            </svg>
+            Candidate Leaderboard
+          </h2>
+          <span class="text-[9px] bg-dark-700 text-accent-cyan border border-accent-cyan/20 px-2.5 py-1 rounded-full uppercase tracking-wider font-extrabold">Auto-Ranked</span>
+        </div>
+
+        <!-- Search Bar -->
+        <div class="mb-4">
+          <input type="text" id="searchInput" placeholder="Search candidates by skill, domain, or name..." class="w-full glass-input text-xs" onkeyup="filterCandidates()">
+        </div>
+
+        <!-- Candidate list -->
+        <div class="space-y-3 flex-1 overflow-y-auto max-h-[480px] scrollbar-thin pr-1" id="candidateList">
+          {% for c in candidates %}
+          <a href="/candidate/{{ c.id }}" class="p-3.5 bg-gray-900/40 hover:bg-gray-800/40 border border-gray-800/80 hover:border-accent-purple/30 rounded-2xl flex items-center justify-between transition-all group candidate-item" data-name="{{ c.name.lower() }}" data-domain="{{ c.domain.lower() }}" data-skills="{{ c.skills_list.lower() }}">
+            <div class="truncate pr-3">
+              <h4 class="text-xs font-bold text-white group-hover:text-accent-cyan transition-colors truncate">{{ c.name }}</h4>
+              <p class="text-[10px] text-gray-500 font-semibold mt-0.5 uppercase tracking-wide">Domain: {{ c.domain }}</p>
+              <p class="text-[9px] text-accent-purple/90 font-medium truncate mt-1">Exp: {{ c.experience_years }} yrs | Certs: {{ c.certifications.split(',')|length if c.certifications else 0 }}</p>
+            </div>
+            <div class="text-right flex flex-col items-end gap-1">
+              <span class="text-sm font-extrabold font-outfit text-accent-cyan">{{ c.score }}/10</span>
+              <span class="text-[9px] text-gray-500 font-semibold uppercase tracking-wider">Rating</span>
+            </div>
+          </a>
+          {% endfor %}
+          {% if not candidates %}
+          <div class="text-center py-20 text-gray-500 italic text-xs">
+            No candidates stored in database. Upload a resume above to start!
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Column: Deep-Dive Candidate Assessment -->
+    <div class="lg:col-span-1 flex flex-col gap-6">
+      
+      <!-- Selected Candidate deep-dive -->
+      {% if active_candidate %}
+      <div class="glass-card p-6 flex flex-col gap-5 animate-fade-in">
+        
+        <!-- Header Info -->
+        <div class="flex items-center justify-between border-b border-gray-800 pb-4">
+          <div class="truncate pr-3">
+            <span class="text-[9px] bg-accent-purple/15 text-accent-purple border border-accent-purple/35 px-2 py-0.5 rounded-full uppercase tracking-wider font-extrabold">Active Assessment</span>
+            <h3 class="text-lg font-extrabold font-outfit text-white tracking-wide truncate mt-1.5">{{ active_candidate.name }}</h3>
+            <p class="text-xs text-gray-400 mt-0.5 font-medium truncate">{{ active_candidate.email }} | {{ active_candidate.phone }}</p>
+          </div>
+          
+          <!-- SVG score meter & delete option -->
+          <div class="flex items-center gap-3.5 shrink-0">
+            <!-- Delete button -->
+            <a href="/delete/{{ active_candidate.id }}" class="p-2.5 bg-accent-rose/10 hover:bg-accent-rose/25 border border-accent-rose/30 hover:border-accent-rose/50 rounded-xl text-accent-rose transition-all cursor-pointer shadow-md" title="Delete Candidate Profile" onclick="return confirm('Are you sure you want to permanently delete this candidate profile?');">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+              </svg>
+            </a>
+            
+            <div class="relative flex items-center justify-center">
+              <svg class="w-16 h-16 gauge-svg">
+                <circle cx="32" cy="32" r="28" stroke="rgba(255,255,255,0.03)" stroke-width="5" fill="none" />
+                <circle cx="32" cy="32" r="28" stroke="#06B6D4" stroke-width="5" fill="none" class="gauge-fill" stroke-dasharray="175.9" stroke-dashoffset="{{ 175.9 * (1 - active_candidate.score / 10) }}" />
+              </svg>
+              <span class="absolute text-sm font-extrabold font-outfit text-white">{{ active_candidate.score }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Job Description Matching -->
+        <div class="bg-gray-900/60 p-4 rounded-2xl border border-gray-800">
+          <h4 class="text-xs font-bold uppercase tracking-wider text-accent-purple mb-2 flex items-center gap-1.5">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+            Job Description Semantic Matcher
+          </h4>
+          <form action="/match/{{ active_candidate.id }}" method="post" class="flex flex-col gap-3">
+            <textarea name="jd" placeholder="Paste custom Job Description here to calculate semantic similarity..." class="w-full p-3 rounded-xl glass-input text-[11px] h-20 resize-none font-sans scrollbar-thin focus:ring-1 focus:ring-accent-purple" required>{{ jd_text if jd_text else '' }}</textarea>
+            
+            <button type="submit" class="self-end bg-gradient-to-r from-accent-purple to-accent-cyan text-white text-[10px] font-bold px-4 py-2 rounded-xl transition-all shadow-md">
+              Calculate Score Overlap
+            </button>
+          </form>
+          
+          {% if jd_results %}
+          <div class="mt-4 pt-3 border-t border-gray-800 grid grid-cols-2 gap-2 text-center">
+            <div class="p-2 bg-dark-800 rounded-xl border border-gray-800">
+              <p class="text-[9px] text-gray-500 font-semibold uppercase">Cosine Match</p>
+              <p class="text-sm font-extrabold text-accent-cyan mt-0.5">{{ jd_results.similarity_score }}%</p>
+            </div>
+            <div class="p-2 bg-dark-800 rounded-xl border border-gray-800">
+              <p class="text-[9px] text-gray-500 font-semibold uppercase">Skill Overlap</p>
+              <p class="text-sm font-extrabold text-accent-emerald mt-0.5">{{ jd_results.overlap_percentage }}%</p>
+            </div>
+          </div>
+          {% endif %}
+        </div>
+
+        <!-- Weighted score breakdowns -->
+        <div class="space-y-3 pb-3 border-b border-gray-800/80">
+          <h4 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-1.5">Weighted Score Components</h4>
+          
+          {% set b = json_loads(active_candidate.raw_breakdown) %}
+          <div>
+            <div class="flex justify-between text-[10px] font-semibold text-gray-500 mb-0.5">
+              <span>Skill Relevance ({{ (weights.skill_weight * 100)|int }}%)</span>
+              <span class="text-white">{{ b.get('skill_relevance', b.get('semantic_similarity', 0.0)) }}/10</span>
+            </div>
+            <div class="w-full bg-dark-800 h-1.5 rounded-full overflow-hidden">
+              <div class="bg-accent-cyan h-full rounded-full" style="width: {{ b.get('skill_relevance', b.get('semantic_similarity', 0.0)) * 10 }}%"></div>
+            </div>
+          </div>
+          <div>
+            <div class="flex justify-between text-[10px] font-semibold text-gray-500 mb-0.5">
+              <span>Experience Relevance ({{ (weights.experience_weight * 100)|int }}%)</span>
+              <span class="text-white">{{ b.get('experience_score', b.get('formatting_bonus', 0.0)) }}/10</span>
+            </div>
+            <div class="w-full bg-dark-800 h-1.5 rounded-full overflow-hidden">
+              <div class="bg-accent-purple h-full rounded-full" style="width: {{ b.get('experience_score', b.get('formatting_bonus', 0.0)) * 10 }}%"></div>
+            </div>
+          </div>
+          <div>
+            <div class="flex justify-between text-[10px] font-semibold text-gray-500 mb-0.5">
+              <span>Education Level ({{ (weights.education_weight * 100)|int }}%)</span>
+              <span class="text-white">{{ b.get('education_score', 0.0) }}/10</span>
+            </div>
+            <div class="w-full bg-dark-800 h-1.5 rounded-full overflow-hidden">
+              <div class="bg-accent-emerald h-full rounded-full" style="width: {{ b.get('education_score', 0.0) * 10 }}%"></div>
+            </div>
+          </div>
+
+          <!-- ATS Score -->
+          <div class="p-3 bg-dark-800 border border-gray-800/80 rounded-xl flex items-center justify-between">
+            <div>
+              <p class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">ATS Score Compatibility</p>
+              <p class="text-xs text-gray-500 mt-0.5 font-medium">Structure and Formatting Validation</p>
+            </div>
+            <span class="text-sm font-extrabold font-outfit text-accent-cyan bg-accent-cyan/10 border border-accent-cyan/20 px-2.5 py-1 rounded-lg">{{ active_candidate.ats_score }}/100</span>
+          </div>
+
+          <!-- Keyword Stuffing Warning -->
+          {% if b.get('keyword_stuffing_penalty', 0.0) > 0 %}
+          <div class="p-3 bg-accent-rose/10 border border-accent-rose/30 rounded-xl text-accent-rose flex items-start gap-2 animate-pulse">
+            <svg class="w-4 h-4 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
+            <div>
+              <p class="text-[10px] font-bold uppercase tracking-wider">Artificial Term Density Detected</p>
+              <p class="text-[9px] mt-0.5 leading-relaxed opacity-95">Flagged for potential keyword spamming. Imposed scoring deduction penalty: -{{ b.get('keyword_stuffing_penalty', 0.0) }}.</p>
+            </div>
+          </div>
+          {% endif %}
+        </div>
+
+        <!-- Recommender Panel -->
+        <div>
+          <h4 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2.5">Career Enhancement Recommendations</h4>
+          <div class="space-y-2">
+            <div>
+              <p class="text-[9px] text-gray-500 font-semibold uppercase tracking-wider mb-1">Skills Upgrades</p>
+              <div class="flex flex-wrap gap-1">
+                {% for r in recs.missing_skills %}
+                <span class="text-[9px] bg-dark-800 text-accent-cyan px-2.5 py-0.5 border border-gray-800 rounded-full font-medium">{{ r }}</span>
+                {% endfor %}
+              </div>
+            </div>
+            <div class="mt-2">
+              <p class="text-[9px] text-gray-500 font-semibold uppercase tracking-wider mb-1">Recommended Certification</p>
+              <p class="text-[10px] font-medium text-white italic">"{{ recs.recommended_certifications[0] if recs.recommended_certifications else 'General Professional Cert' }}"</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      {% else %}
+      <div class="glass-card p-8 text-center flex flex-col items-center justify-center min-h-[450px] border border-dashed border-gray-800">
+        <div class="p-4 bg-dark-800 rounded-full mb-4">
+          <svg class="w-8 h-8 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+            <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+          </svg>
+        </div>
+        <h3 class="text-lg font-bold font-outfit text-gray-300">Deep-Dive Screening</h3>
+        <p class="text-xs text-gray-500 max-w-[200px] mt-1 leading-relaxed">
+          Select a candidate profile from the ranked leaderboard queue to explore scores, matching, and advice.
+        </p>
+      </div>
+      {% endif %}
+
+    </div>
+
+  </main>
+
+  <script>
+    // File upload label update
+    const fileInput = document.getElementById('fileInput');
+    if (fileInput) {
+      fileInput.addEventListener('change', function(e) {
+        if (e.target.files.length > 0) {
+          document.getElementById('fileName').innerText = e.target.files[0].name;
+        }
+      });
+    }
+
+    // Interactive JavaScript filtering for the candidate list
+    function filterCandidates() {
+      const val = document.getElementById('searchInput').value.toLowerCase().trim();
+      const items = document.getElementsByClassName('candidate-item');
+      
+      for (let item of items) {
+        const name = item.getAttribute('data-name');
+        const domain = item.getAttribute('data-domain');
+        const skills = item.getAttribute('data-skills');
+        
+        if (name.includes(val) || domain.includes(val) || skills.includes(val)) {
+          item.style.display = 'flex';
+        } else {
+          item.style.display = 'none';
+        }
+      }
+    }
+  </script>
+</body>
+</html>
