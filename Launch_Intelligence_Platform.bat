@@ -1,9 +1,9 @@
 @echo off
-title Recruitment Intelligence Platform Launcher
+title Resume Parser AI Project Launcher
 color 0A
 cls
 echo =======================================================================
-echo             AI RECRUITMENT INTELLIGENCE PLATFORM - ATS
+echo                      RESUME PARSER AI PROJECT
 echo =======================================================================
 echo.
 echo   [1/3] Verifying and installing required python dependencies...
