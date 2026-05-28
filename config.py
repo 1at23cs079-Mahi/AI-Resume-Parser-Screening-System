@@ -7,14 +7,22 @@ class Config:
     # Base Workspace path
     BASE_DIR = os.path.abspath(os.path.dirname(__file__))
     
-    # SQLite Database URI
-    DATABASE = os.path.join(BASE_DIR, 'database', 'recruitment_intelligence.db')
+    # Check if running on Vercel
+    IS_VERCEL = os.environ.get('VERCEL') == '1' or 'VERCEL' in os.environ
     
-    # Upload Configurations
-    UPLOAD_FOLDER = os.path.join(BASE_DIR, 'uploads')
+    if IS_VERCEL:
+        DATABASE = '/tmp/recruitment_intelligence.db'
+        UPLOAD_FOLDER = '/tmp/uploads'
+    else:
+        # SQLite Database URI
+        DATABASE = os.path.join(BASE_DIR, 'database', 'recruitment_intelligence.db')
+        # Upload Configurations
+        UPLOAD_FOLDER = os.path.join(BASE_DIR, 'uploads')
+        
     MAX_CONTENT_LENGTH = 5 * 1024 * 1024  # Strict Max upload: 5 Megabytes
     ALLOWED_EXTENSIONS = {'pdf', 'docx', 'txt', 'png', 'jpg', 'jpeg'}
     
     # Model Thresholds
     ATS_MIN_ACCEPTABLE_SCORE = 50.0
     COSINE_SIMILARITY_THRESHOLD = 0.40
+

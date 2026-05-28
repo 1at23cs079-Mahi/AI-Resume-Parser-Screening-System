@@ -4,15 +4,24 @@ from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 from nltk.stem import PorterStemmer, WordNetLemmatizer
 
+# Configure NLTK data path for serverless compatibility
+import os
+if os.environ.get('VERCEL') == '1' or 'VERCEL' in os.environ:
+    nltk_temp_path = '/tmp/nltk_data'
+    os.makedirs(nltk_temp_path, exist_ok=True)
+    if nltk_temp_path not in nltk.data.path:
+        nltk.data.path.append(nltk_temp_path)
+
 # Dynamic download of NLTK datasets
 def init_nltk_corpora():
     for res in ["punkt", "stopwords", "wordnet", "punkt_tab"]:
         try:
-            nltk.download(res, quiet=True)
+            nltk.download(res, download_dir='/tmp/nltk_data' if os.environ.get('VERCEL') == '1' or 'VERCEL' in os.environ else None, quiet=True)
         except Exception as e:
             print(f"Error downloading NLTK corpus {res}: {e}")
 
 init_nltk_corpora()
+
 
 try:
     STOP_WORDS = set(stopwords.words("english"))

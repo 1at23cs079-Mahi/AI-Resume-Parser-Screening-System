@@ -1,0 +1,15 @@
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+venv/
+.venv/
+env/
+ENV/
+.git/
+.gitignore
+docs/
+.vscode/
+.idea/
+dataset/resumes.csv
+backend/data/resumes.csv

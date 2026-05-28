@@ -13,13 +13,22 @@ from sklearn.metrics.pairwise import cosine_similarity
 
 # Ensure NLTK resources are downloaded
 def download_nltk_resources():
+    # Configure NLTK data path for serverless compatibility
+    import os
+    if os.environ.get('VERCEL') == '1' or 'VERCEL' in os.environ:
+        nltk_temp_path = '/tmp/nltk_data'
+        os.makedirs(nltk_temp_path, exist_ok=True)
+        if nltk_temp_path not in nltk.data.path:
+            nltk.data.path.append(nltk_temp_path)
+
     for res in ["punkt", "stopwords", "wordnet", "punkt_tab"]:
         try:
-            nltk.download(res, quiet=True)
+            nltk.download(res, download_dir='/tmp/nltk_data' if os.environ.get('VERCEL') == '1' or 'VERCEL' in os.environ else None, quiet=True)
         except Exception as e:
             print(f"Failed to download NLTK resource {res}: {e}")
 
 download_nltk_resources()
+
 
 # Load NLTK stop words and lemmatizer
 try:

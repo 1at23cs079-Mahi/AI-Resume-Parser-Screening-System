@@ -11,7 +11,6 @@ from sklearn.metrics import accuracy_score, precision_recall_fscore_support
 
 from preprocessing.cleaner import clean_text
 from database.seed_data import seed_db
-
 class DomainClassifierSuite:
     def __init__(self):
         self.vectorizer = TfidfVectorizer(max_features=1000)
@@ -26,12 +25,48 @@ class DomainClassifierSuite:
         self.best_model_name = None
         self.best_model = None
         self.is_trained = False
+        
+        # Try loading pre-saved models on startup to avoid cold-start delays on serverless platforms
+        self.load_saved_model_files()
 
-    def train_and_compare(self, csv_path='database/resumes.csv'):
+    def load_saved_model_files(self):
+        """
+        Loads pre-trained model and TF-IDF vectorizer if available on disk.
+        """
+        import pickle
+        import json
+        
+        base_dir = os.path.dirname(os.path.abspath(__file__))
+        parent_dir = os.path.dirname(base_dir)
+        model_path = os.path.join(parent_dir, 'models', 'best_model.pkl')
+        vectorizer_path = os.path.join(parent_dir, 'models', 'tfidf_vectorizer.pkl')
+        metrics_path = os.path.join(parent_dir, 'models', 'metrics.json')
+        
+        if os.path.exists(model_path) and os.path.exists(vectorizer_path) and os.path.exists(metrics_path):
+            try:
+                with open(model_path, 'rb') as f:
+                    self.best_model = pickle.load(f)
+                with open(vectorizer_path, 'rb') as f:
+                    self.vectorizer = pickle.load(f)
+                with open(metrics_path, 'r') as f:
+                    m_data = json.load(f)
+                    self.best_model_name = m_data.get("best_model_name", "Logistic Regression")
+                    self.metrics_comparison = m_data.get("metrics", {})
+                self.is_trained = True
+                print(f"Successfully loaded cached model: {self.best_model_name} and metrics.")
+                return True
+            except Exception as e:
+                print(f"Failed to load cached models, falling back to train: {e}")
+        return False
+
+    def train_and_compare(self, csv_path='database/resumes.csv', force=False):
         """
         Loads the seeded dataset, cleans it, trains the four models, 
         evaluates performance metrics, and selects the best model.
         """
+        if self.is_trained and not force:
+            return
+            
         # Ensure database is seeded and CSV exists
         seed_db()
         
