@@ -20,3 +20,14 @@ Then, you can build a clustering algorithm that groups closely related words and
 ## Dataset
 
 * **Kaggle Resume Dataset**
+
+---
+
+## ⚠️ Important Internship Guidelines
+
+> [!IMPORTANT]
+> **Strict Compliance & Authenticity Guidelines:**
+> * **Submission Deadline**: Students who fail to submit the mini project within the deadline will not be eligible for further internship progression.
+> * **Originality Policy**: Any copied, cheated, or plagiarized work will be strictly rejected. Such students will not be eligible for internship continuation or certificate issuance.
+> * **Certificate Issuance**: Certificates will only be issued after successful completion of all required tasks.
+

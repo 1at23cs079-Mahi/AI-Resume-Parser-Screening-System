@@ -79,3 +79,14 @@ Future enhancements include:
 
 ### Conclusion:
 This platform successfully upgrades traditional recruitment pipelines. By implementing semantic skill intelligence, machine learning classifiers, and overstuffing defenses, it provides an authentic, smart, and lightweight ATS suitable for advanced engineering evaluations.
+
+---
+
+## ⚠️ Important Internship Guidelines & Compliance
+
+> [!IMPORTANT]
+> **Administrative & Submission Rules:**
+> * **Progression Eligibility**: Students who fail to submit the mini project within the deadline will not be eligible for further internship progression.
+> * **Authenticity Pledge**: Any copied, cheated, or plagiarized work will be strictly rejected. Such students will not be eligible for internship continuation or certificate issuance.
+> * **Certification Criteria**: Certificates will only be issued after successful completion of all required tasks.
+
