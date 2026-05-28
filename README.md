@@ -1,5 +1,7 @@
 # Resume Parser AI Project
 
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2F1at23cs079-Mahi%2FAI-Resume-Parser-Screening-System)
+
 ## Introduction
 
 Recruiters spend a significant amount of time manually reviewing resumes to identify suitable candidates for job positions. Since a single job opening may receive hundreds of applications, traditional recruitment processes become slow, inefficient, and prone to human error. Most existing systems rely only on simple keyword matching, which can incorrectly rank candidates who artificially stuff resumes with repeated keywords.
