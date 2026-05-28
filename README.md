@@ -25,6 +25,84 @@ Then, you can build a clustering algorithm that groups closely related words and
 
 ---
 
+## 📂 Project Structure
+
+```text
+Resume-Parser-AI-Project/
+│
+├── .gitignore                   # Excludes local pycaches, environments, and logs from Git
+├── .vercelignore                # Excludes heavy datasets and virtualenvs from Vercel uploads
+├── requirements.txt             # Python libraries (Flask, NLTK, Scikit-Learn, Pandas, PyPDF, etc.)
+├── config.py                    # Configurations (Dynamic SQLite & Upload folders for local/Vercel)
+├── app.py                       # Main Flask Server & Route Controller (Chatbot, Analytics, Leaders)
+│
+├── Launch_Intelligence_Platform.bat  # 1-Click launcher (installs dependencies, seeds DB & runs Flask)
+├── vercel.json                  # Serverless function configuration to host Flask instantly on Vercel
+│
+├── analytics/                   # Recruiter analytics reporting module
+│   └── dashboard.py
+│
+├── chatbot/                     # Dialog AI Recruiter dialogue chatbot agent
+│   └── ai_assistant.py
+│
+├── clustering/                  # Unsupervised K-Means clustering pipelines
+│   └── resume_cluster.py
+│
+├── database/                    # Persistence layer & Pre-populated records
+│   ├── db_manager.py            # SQLite database schema, CRUD functions, & cascades deletes
+│   ├── seed_data.py             # Preseeded professional resume candidate profiles
+│   └── recruitment_intelligence.db # Active SQLite preseeded Database file
+│
+├── dataset/                     # Core Kaggle Resume Dataset
+│   └── resumes.csv
+│
+├── docs/                        # Academic Submission Documentation & Prep
+│   ├── submission_report.md     # Mini-project reports (Objectives, DFD, ER maps, Conclusions)
+│   └── viva_questions.md        # Top 25 Viva Voce prep questions & answers
+│
+├── ml_models/                   # Supervised machine learning algorithms
+│   ├── classifier.py            # Comparative training (NB, Logistic Reg, SVM, Random Forest)
+│   └── vectorizer.py            # TF-IDF feature extraction pipeline
+│
+├── models/                      # Saved trained models & metrics
+│   ├── best_model.pkl           # Saved best performing trained ML model
+│   ├── tfidf_vectorizer.pkl     # Saved fitted TF-IDF vectorizer weights
+│   └── metrics.json             # Serialized comparative classifier performance scores
+│
+├── parsers/                     # Multiformat document readers
+│   ├── pdf_parser.py            # Extracts text from PDF candidate resumes
+│   ├── docx_parser.py           # Extracts text from DOCX candidate resumes
+│   ├── txt_parser.py            # Extracts text from TXT files
+│   └── ocr_parser.py            # Scanned resume image OCR text reader fallback
+│
+├── preprocessing/               # NLP cleaning pipelines (NLTK)
+│   ├── text_cleaner.py          # Case-folding, stopwords removal, lemmatization, & sanitization
+│   └── cleaner.py
+│
+├── scoring/                     # ATS and custom suitability scoring engines
+│   ├── candidate_ranker.py      # Dynamic weighted scoring algorithm (0 to 10 scale)
+│   └── ats_simulator.py         # ATS matching score parser (0 to 100 scale)
+│
+├── security/                    # Secure validation controls
+│   └── validator.py             # File size filters, allowed extensions, and filename sanitizers
+│
+├── static/                      # Visual Design Sheets
+│   └── style.css                # Slate Dark-Theme glassmorphic styling & micro-animations
+│
+├── templates/                   # User Interfaces (HTML Jinja Templates)
+│   ├── dashboard.html           # Main Recruiter Hub & leaderboard panel
+│   ├── analytics.html           # 2D PCA K-Means clusters and comparative ML charts page
+│   └── chatbot.html             # Conversational AI dialogue interface page
+│
+├── uploads/                     # Secure server upload location
+│   └── .gitkeep                 # Ensures empty directory is tracked on Git clone
+│
+└── utils/                       # Candidate recommendations engine
+    └── recommender.py
+```
+
+---
+
 ## 2. Setup Instructions
 
 To run the **Resume Parser AI Project** locally on your system, follow these quick and easy steps:
