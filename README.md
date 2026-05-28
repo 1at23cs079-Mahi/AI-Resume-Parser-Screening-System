@@ -1,4 +1,4 @@
-# 3. Resume Parser AI Project
+# Resume Parser AI Project
 
 ## Introduction
 
